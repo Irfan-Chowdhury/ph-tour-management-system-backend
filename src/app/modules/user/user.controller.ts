@@ -1,0 +1,29 @@
+import { Request, Response } from "express";
+import { User } from "./user.model";
+import { httpStatus } from "http-status-codes";
+
+const createUser = async (req: Request, res: Response) => {
+    try {
+        const {name, email} =  req.body;
+
+        const user = await User.ceate({
+            name,
+            email
+        })
+
+        res.status(httpStatus.CREATED).json({
+            message: "User Created Successfully",
+            user
+        })
+    } catch (error:any) {
+        console.log(error);
+        res.status(httpStatus.BAD_REQUEST).json({
+            message: `Something went worng !! ${error.message}`,
+            error
+        })
+    }
+}
+
+export const UserController = {
+    createUser
+}

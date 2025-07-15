@@ -4,6 +4,7 @@ import httpStatus from "http-status-codes";
 import { UserService } from "./user.service";
 import AppError from "../../errorHelpers/AppError";
 import { catchAsync } from "../../utils/catchAsync";
+import { sendResponse } from "../../utils/sendResponse";
 
 
 // const createUserFunction = async (req: Response, res: Response) => {
@@ -53,20 +54,34 @@ import { catchAsync } from "../../utils/catchAsync";
 const createUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const user = await UserService.createUser(req.body);
 
-    res.status(httpStatus.CREATED).json({
+    // res.status(httpStatus.CREATED).json({
+    //     message: "User Created Successfully",
+    //     user
+    // });
+
+    sendResponse(res, {
+        success : true,
+        statusCode: httpStatus.CREATED,
         message: "User Created Successfully",
-        user
+        data: user
     });
 });
 
 
 const getAllUsers = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const users = await UserService.getAllUsers();
+    const result = await UserService.getAllUsers();
 
-    res.status(httpStatus.OK).json({
-        success:true,
-        message: "All Users Retrieved Successfully",
-        data:users
+    // res.status(httpStatus.OK).json({
+    //     success:true,
+    //     message: "All Users Retrieved Successfully",
+    //     data:users
+    // });
+    sendResponse(res, {
+        success : true,
+        statusCode: httpStatus.OK,
+        message: "All users retrive Successfully",
+        data: result.data,
+        meta: result.meta,
     });
 });
 

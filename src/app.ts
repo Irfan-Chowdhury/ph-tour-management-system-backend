@@ -4,6 +4,9 @@ import { UserRoutes } from "./app/modules/user/user.route";
 import { router } from "./app/routes";
 import { envVars } from "./config/env";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
+import httpStatus from "http-status-codes";
+import { success } from "zod";
+import notFound from "./middlewares/notFound";
 
 
 const app =  express();
@@ -34,6 +37,18 @@ app.get("/", (req:Request, res:Response) => {
 
 // 2nd Approch
 app.use(globalErrorHandler);
+
+
+// 1st Approch
+// app.use((req: Request, res: Response) => {
+//     res.status(httpStatus.NOT_FOUND).json({
+//         success:false,
+//         message: "Route Not Found"
+//     })
+// });
+
+// 2nd Approch
+app.use(notFound);
 
 
 export default app;

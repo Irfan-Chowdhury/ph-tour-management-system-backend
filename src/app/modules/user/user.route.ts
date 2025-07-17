@@ -1,10 +1,13 @@
 import { NextFunction, Request, Response, Router } from "express";
 // import {AnyZodObject} from "zod";
-import {ZodObject} from "zod";
+import { ZodObject} from "zod";
 
 import { UserController } from "./user.controller";
 import { createUserZodSchema } from "./user.validation";
 import { validateRequest } from "../../../middlewares/validateRequest";
+import AppError from "../../errorHelpers/AppError";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import { Role } from "./user.interface";
 
 // const validateRequest = (zodSchema:ZodObject) => async(req: Request, res:Response, next:NextFunction) => {
 //     try {
@@ -75,6 +78,33 @@ router.post("/register", validateRequest(createUserZodSchema), UserController.cr
 // router.post("/register", UserController.createUser);
 
 
-router.get("/all-users", UserController.getAllUsers);
+// router.get("/all-users", UserController.getAllUsers);
+
+
+router.get("/all-users", 
+    async (req: Request, res: Response, next: NextFunction) => {
+    
+        try {
+            const accessToken = req.headers.authorization;
+
+            if (!accessToken) {
+                throw new AppError(403, "No Token Recieved");
+            }
+
+            const verifiedToken = jwt.verify(accessToken, "secret");
+
+            if ((verifiedToken as JwtPayload).role !== Role.ADMIN || Role.SUPER_ADMIN) {
+                throw new AppError(403, "You are not permitted to view this route!!!")
+            }
+            console.log(verifiedToken);
+            next();
+
+        } catch (error) {
+            next(error);
+        }
+
+}, UserController.getAllUsers);
+
+
 
 export const UserRoutes = router;

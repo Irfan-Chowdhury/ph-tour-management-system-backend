@@ -42,3 +42,7 @@ npm i http-status-codes
 
 
 npm i bcryptjs
+
+
+npm i jsonwebtoken
+npm i -D @types/jsonwebtoken

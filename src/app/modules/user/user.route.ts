@@ -8,6 +8,9 @@ import { validateRequest } from "../../../middlewares/validateRequest";
 import AppError from "../../errorHelpers/AppError";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { Role } from "./user.interface";
+import { verifyToken } from "../../utils/jwt";
+import { envVars } from "../../../config/env";
+import { AuthControllers } from "../auth/auth.controller";
 
 // const validateRequest = (zodSchema:ZodObject) => async(req: Request, res:Response, next:NextFunction) => {
 //     try {
@@ -74,36 +77,45 @@ const router = Router();
 
 
 
-router.post("/register", validateRequest(createUserZodSchema), UserController.createUser);
 // router.post("/register", UserController.createUser);
 
 
 // router.get("/all-users", UserController.getAllUsers);
 
 
-router.get("/all-users", 
-    async (req: Request, res: Response, next: NextFunction) => {
-    
-        try {
-            const accessToken = req.headers.authorization;
 
-            if (!accessToken) {
-                throw new AppError(403, "No Token Recieved");
-            }
+export const checkAuth = (...authRoles:string[]) => async (req: Request, res: Response, next: NextFunction) => {
 
-            const verifiedToken = jwt.verify(accessToken, "secret");
+    try {
+        const accessToken = req.headers.authorization;
 
-            if ((verifiedToken as JwtPayload).role !== Role.ADMIN || Role.SUPER_ADMIN) {
-                throw new AppError(403, "You are not permitted to view this route!!!")
-            }
-            console.log(verifiedToken);
-            next();
-
-        } catch (error) {
-            next(error);
+        if (!accessToken) {
+            throw new AppError(403, "No Token Recieved")
         }
 
-}, UserController.getAllUsers);
+        const verifiedToken = verifyToken(accessToken, envVars.JWT_ACCESS_SECRET);
+
+        if ((verifiedToken as JwtPayload).Role !== Role.ADMIN) {
+            throw new AppError(403, "You are not permitted to view this route");
+        }
+        
+        // if (!AuthControllers.includes(verifiedToken.role)) {
+        //     throw new AppError(403, "You are not permitted to view this route!!!")
+        // }
+        // req.user = verifiedToken
+        console.log(verifiedToken);
+
+        next();
+
+    } catch (error) {
+        console.log("jwt error", error);
+        next(error)
+    }
+}
+
+router.post("/register", validateRequest(createUserZodSchema), UserController.createUser);
+
+router.get("/all-users", checkAuth("ADMIN", "SUPER_ADMIN"),  UserController.getAllUsers);
 
 
 

@@ -40,3 +40,5 @@ npx eslint ./src
 
 npm i http-status-codes
 
+
+npm i bcryptjs

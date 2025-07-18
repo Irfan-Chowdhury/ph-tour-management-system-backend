@@ -3,10 +3,10 @@ import express, { NextFunction, Request, Response } from "express";
 import { UserRoutes } from "./app/modules/user/user.route";
 import { router } from "./app/routes";
 import { envVars } from "./config/env";
-import { globalErrorHandler } from "./middlewares/globalErrorHandler";
+import { globalErrorHandler } from "./app/middlewares/globalErrorHandler";
 import httpStatus from "http-status-codes";
 import { success } from "zod";
-import notFound from "./middlewares/notFound";
+import notFound from "./app/middlewares/notFound";
 
 
 const app =  express();

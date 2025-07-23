@@ -58,8 +58,8 @@ passport.use(
 
 
 passport.serializeUser((user: any, done: (err: any, id?: unknown) => void) => {
-    done(null, user._id)
-})
+    done(null, user._id);
+});
 
 passport.deserializeUser(async (id: string, done: any) => {
     try {
@@ -69,4 +69,4 @@ passport.deserializeUser(async (id: string, done: any) => {
         console.log(error);
         done(error)
     }
-})
+});

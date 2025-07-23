@@ -2,16 +2,26 @@ import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import { UserRoutes } from "./app/modules/user/user.route";
 import { router } from "./app/routes";
-import { envVars } from "./config/env";
+import { envVars } from "./app/config/env";
 import { globalErrorHandler } from "./app/middlewares/globalErrorHandler";
 import httpStatus from "http-status-codes";
 import { success } from "zod";
 import notFound from "./app/middlewares/notFound";
-
+import cookieParser from "cookie-parser";
+import passport from "passport";
+import expressSession from "express-session";
+import "./app/config/passport";
 
 const app =  express();
 
-
+app.use(expressSession({
+    secret: envVars.EXPRESS_SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(cookieParser());
 app.use(express.json());
 app.use(cors());
 
@@ -35,11 +45,11 @@ app.get("/", (req:Request, res:Response) => {
 //     })
 // })
 
-// 2nd Approch
+// 2nd Approach
 app.use(globalErrorHandler);
 
 
-// 1st Approch
+// 1st Approach
 // app.use((req: Request, res: Response) => {
 //     res.status(httpStatus.NOT_FOUND).json({
 //         success:false,
@@ -47,7 +57,7 @@ app.use(globalErrorHandler);
 //     })
 // });
 
-// 2nd Approch
+// 2nd Approach
 app.use(notFound);
 
 

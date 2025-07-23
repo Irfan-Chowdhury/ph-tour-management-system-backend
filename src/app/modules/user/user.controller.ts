@@ -49,7 +49,7 @@ const getAllUsers = catchAsync(async (req: Request, res: Response, next: NextFun
     sendResponse(res, {
         success : true,
         statusCode: httpStatus.OK,
-        message: "All users retrive Successfully",
+        message: "All users retrieve Successfully",
         data: result.data,
         meta: result.meta,
     });

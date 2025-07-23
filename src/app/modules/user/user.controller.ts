@@ -5,6 +5,7 @@ import { UserService } from "./user.service";
 import AppError from "../../errorHelpers/AppError";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
+import { JwtPayload } from "jsonwebtoken";
 
 
 
@@ -28,7 +29,7 @@ const updateUser = catchAsync(async (req: Request, res: Response, next: NextFunc
     const verifiedToken = req.user;
 
     const payload = req.body;
-    const user = await UserService.updateUser(userId, payload, verifiedToken)
+    const user = await UserService.updateUser(userId, payload, verifiedToken as JwtPayload)
 
     // res.status(httpStatus.CREATED).json({
     //     message: "User Created Successfully",

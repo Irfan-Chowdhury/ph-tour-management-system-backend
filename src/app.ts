@@ -2,7 +2,7 @@ import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import { UserRoutes } from "./app/modules/user/user.route";
 import { router } from "./app/routes";
-import { envVars } from "./config/env";
+import { envVars } from "./app/config/env";
 import { globalErrorHandler } from "./app/middlewares/globalErrorHandler";
 import httpStatus from "http-status-codes";
 import { success } from "zod";

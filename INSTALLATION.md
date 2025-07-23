@@ -46,3 +46,8 @@ npm i bcryptjs
 
 npm i jsonwebtoken
 npm i -D @types/jsonwebtoken
+
+
+
+npm i cookie-parser
+npm i -D @types/cookie-parser

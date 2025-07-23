@@ -7,11 +7,12 @@ import { globalErrorHandler } from "./app/middlewares/globalErrorHandler";
 import httpStatus from "http-status-codes";
 import { success } from "zod";
 import notFound from "./app/middlewares/notFound";
+import cookieParser from "cookie-parser";
 
 
 const app =  express();
 
-
+app.use(cookieParser());
 app.use(express.json());
 app.use(cors());
 
@@ -35,11 +36,11 @@ app.get("/", (req:Request, res:Response) => {
 //     })
 // })
 
-// 2nd Approch
+// 2nd Approach
 app.use(globalErrorHandler);
 
 
-// 1st Approch
+// 1st Approach
 // app.use((req: Request, res: Response) => {
 //     res.status(httpStatus.NOT_FOUND).json({
 //         success:false,
@@ -47,7 +48,7 @@ app.use(globalErrorHandler);
 //     })
 // });
 
-// 2nd Approch
+// 2nd Approach
 app.use(notFound);
 
 

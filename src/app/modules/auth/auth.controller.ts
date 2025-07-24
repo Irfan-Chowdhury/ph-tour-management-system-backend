@@ -173,5 +173,7 @@ export const AuthControllers = {
 }
 
 
-// 29-3 Implement Passport JS For Custom Authentication in routes and controllers
-// 29-4 Testing Credential Authentication with Passport
+// 29-5 Handling Mongoose Cast Error and Duplicate Error
+// 29-6 Handling Mongoose Validation Error
+// 29-7 Handling Zod Error
+// 29-8 Refactoring Error Handlers to separate functions

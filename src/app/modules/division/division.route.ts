@@ -7,7 +7,6 @@ import { DivisionController } from "./division.controller";
 
 const router = Router();
 
-router.get("/", DivisionController.getAllDivisions);
 
 router.post(
     "/create",
@@ -15,6 +14,8 @@ router.post(
     validateRequest(createDivisionSchema),
     DivisionController.createDivision
 );
+
+router.get("/", DivisionController.getAllDivisions);
 
 router.get("/:slug", DivisionController.getSingleDivision);
 

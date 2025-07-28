@@ -53,7 +53,7 @@ tourSchema.pre("save", async function (next) {
 
         this.slug = slug;
     }
-    next()
+    next();
 })
 
 tourSchema.pre("findOneAndUpdate", async function (next) {
@@ -74,7 +74,7 @@ tourSchema.pre("findOneAndUpdate", async function (next) {
 
     this.setUpdate(tour)
 
-    next()
+    next();
 })
 
 export const Tour = model<ITour>("Tour", tourSchema)
